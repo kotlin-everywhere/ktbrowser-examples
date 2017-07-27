@@ -1,9 +1,6 @@
 import com.github.kotlin.everywhere.browser.Attribute.Companion.onClick
 import com.github.kotlin.everywhere.browser.Cmd
 import com.github.kotlin.everywhere.browser.Html
-import com.github.kotlin.everywhere.browser.Html.Companion.button
-import com.github.kotlin.everywhere.browser.Html.Companion.div
-import com.github.kotlin.everywhere.browser.Html.Companion.text
 import com.github.kotlin.everywhere.browser.runProgram
 import kotlin.browser.window
 
@@ -22,11 +19,12 @@ private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { msg, model ->
 }
 
 private val view: (Model) -> Html<Msg> = { (count) ->
-    div(listOf(), listOf(
-            text("$count"),
-            button(listOf(onClick(Increment)), listOf(text("+"))),
-            button(listOf(onClick(Decrement)), listOf(text("-")))
-    ))
+    Html.div {
+        +"$count"
+        +" "
+        button(onClick(Increment)) { +"+" }
+        button(onClick(Decrement)) { +"-" }
+    }
 }
 
 fun main(args: Array<String>) {

@@ -25,6 +25,20 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile 'com.github.kotlin-everywhere:ktbrowser:c6d22e9fa0395f3ce6f9e8ba75af49ea025aeede'
+    compile 'com.github.kotlin-everywhere:ktbrowser:def0fc89f7c73e4e64b00e3822eabbc0df6da2ee'
 }
 
+build.doLast {
+    (configurations.compile + configurations.testCompile).each { File file ->
+        copy {
+            includeEmptyDirs = false
+
+            from zipTree(file.absolutePath)
+            into "${buildDir}/kotlin-javascript-dependencies"
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        }
+    }
+}
